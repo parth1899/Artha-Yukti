@@ -13,6 +13,7 @@ CORS(app)
 # Global variable to hold the extracted query components.
 extracted = None
 user_query = None
+news_analysis = None # global variable to pass news data to sentiment analysis
 
 @app.route('/query', methods=['POST'])
 def process_query():
@@ -44,6 +45,8 @@ def process_query_concurrent():
     global extracted
     if not extracted:
         return jsonify({"error": "No extracted data found. Please call /query first."}), 400
+    
+    print(f"Extracted components: {extracted}")
 
     # Call the three helper functions concurrently using the global extracted components.
     with ThreadPoolExecutor(max_workers=3) as executor:
@@ -60,13 +63,23 @@ def process_query_concurrent():
             except Exception as exc:
                 results[component] = {"error": str(exc)}
 
+    global news_analysis
+    # Extract content from the first article
+    news_articles = results.get("news", {}).get("articles", [])
+    if news_articles and "content" in news_articles[0]:
+        news_analysis = news_articles[0]["content"]
+    else:
+        news_analysis = "No relevant news content available."
+
+    print(f"Stored news_analysis: {news_analysis}")
+
     return jsonify({"result": results})
 
 @app.route('/sentiment', methods=['GET'])
 def get_sentiment():
-    global user_query
-    
-    sentiment_result = analyze_sentiment(user_query)
+    global news_analysis
+    print(f"News analysis: {news_analysis}")
+    sentiment_result = analyze_sentiment(news_analysis)
 
     for item in sentiment_result:
         print(f"Label: {item['label']} | Score: {item['score']:.4f}")
