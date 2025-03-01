@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactMarkdown from 'react-markdown';
 
 interface ChatOutputProps {
   messages: Array<{
@@ -13,7 +14,7 @@ const ChatOutput: React.FC<ChatOutputProps> = ({ messages }) => {
   return (
     <div className="bg-gray-50 p-4 h-64 overflow-y-auto border border-gray-200 rounded-lg">
       {message ? (
-        <p>{message.text}</p>
+        <ReactMarkdown>{message.text}</ReactMarkdown>
       ) : (
         <div className="text-gray-400 text-center flex items-center justify-center h-full">
           <p>No analysis data yet. Search for a company to begin.</p>

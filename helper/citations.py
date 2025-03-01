@@ -21,7 +21,7 @@ def main(stock_name: str = None):
         stock_name = input("Enter the stock name (e.g., Asian Paints Ltd): ")
 
     # Initialize the FirecrawlApp with your API key
-    app = FirecrawlApp(api_key=Settings.FIRE_CRAWL_API_KEY)
+    app = FirecrawlApp(api_key='fc-7174987a5f824e74b688ce1392114077')
 
     # Build a search query string with factors needed for analysis
     search_query = f"{stock_name} stock analysis profit loss revenue news"

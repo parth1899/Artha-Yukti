@@ -1,43 +1,29 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { ChevronLeft, ChevronRight, ExternalLink } from 'lucide-react';
+
+interface ValidationSource {
+  snippet: string;
+  title: string;
+  url: string;
+}
 
 const ValidationCarousel: React.FC = () => {
   const [scrollPosition, setScrollPosition] = useState(0);
+  const [validationSources, setValidationSources] = useState<ValidationSource[]>([]);
   const carouselRef = useRef<HTMLDivElement>(null);
 
-  // Sample validation sources
-  const validationSources = [
-    {
-      title: 'MoneyControl Financial Data',
-      url: 'https://www.moneycontrol.com/india/stockpricequote',
-      description: 'Comprehensive financial data and stock quotes'
-    },
-    {
-      title: 'NSE India Market Data',
-      url: 'https://www.nseindia.com',
-      description: 'Official market data from National Stock Exchange of India'
-    },
-    {
-      title: 'LiveMint Financial News',
-      url: 'https://www.livemint.com/market',
-      description: 'Latest financial news and market analysis'
-    },
-    {
-      title: 'Economic Times Markets',
-      url: 'https://economictimes.indiatimes.com/markets',
-      description: 'Market news, analysis and stock recommendations'
-    },
-    {
-      title: 'Bloomberg Quint',
-      url: 'https://www.bloombergquint.com',
-      description: 'Business and financial news with focus on Indian markets'
-    },
-    {
-      title: 'Yahoo Finance India',
-      url: 'https://in.finance.yahoo.com',
-      description: 'Stock data, charts, and financial news'
-    }
-  ];
+  useEffect(() => {
+    const fetchValidations = async () => {
+      try {
+        const res = await fetch("http://127.0.0.1:5000/validations");
+        const data = await res.json();
+        setValidationSources(data.result);
+      } catch (error) {
+        console.error("Error fetching validations:", error);
+      }
+    };
+    fetchValidations();
+  }, []);
 
   const scroll = (direction: 'left' | 'right') => {
     if (carouselRef.current) {
@@ -79,15 +65,19 @@ const ValidationCarousel: React.FC = () => {
           {validationSources.map((source, index) => (
             <div 
               key={index}
-              className="flex-shrink-0 w-72 bg-white rounded-lg shadow-md p-4 border border-gray-200 hover:border-indigo-300 transition-colors duration-300"
+              className="relative flex-shrink-0 w-72 h-56 bg-white rounded-lg shadow-md p-4 border border-gray-200 overflow-hidden hover:border-indigo-300 transition-colors duration-300"
             >
-              <h3 className="font-medium text-lg mb-2 text-indigo-600">{source.title}</h3>
-              <p className="text-gray-600 mb-3 text-sm">{source.description}</p>
+              <div className="pb-10">
+                <h3 className="font-medium text-lg mb-2 text-indigo-600">{source.title}</h3>
+                <p className="text-gray-600 mb-3 text-sm overflow-hidden line-clamp-3">
+                  {source.snippet}
+                </p>
+              </div>
               <a 
                 href={source.url} 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="flex items-center text-indigo-500 hover:text-indigo-700 text-sm font-medium"
+                className="absolute bottom-4 left-4 flex items-center text-indigo-500 hover:text-indigo-700 text-sm font-medium"
               >
                 Visit Source <ExternalLink className="h-4 w-4 ml-1" />
               </a>

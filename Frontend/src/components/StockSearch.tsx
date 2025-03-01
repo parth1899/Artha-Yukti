@@ -81,7 +81,7 @@ const StockSearch: React.FC<StockSearchProps> = ({ onSearch }) => {
                   </div>
                 ))
               ) : (
-                <div className="px-4 py-2 text-gray-500">No matches found</div>
+                <div className="px-4 py-2 text-gray-500">What's on your mind?</div>
               )}
             </div>
           )}
