@@ -103,7 +103,10 @@ def get_graphs():
 
 
 @app.route('/recommendation', methods=['GET'])
-
+def get_recommendation():
+    global user_query
+    print(f"User query: {user_query}")
+    return jsonify({"result": "Recommendation will be displayed here."})
 
 if __name__ == '__main__':
     app.run(debug=True)
