@@ -7,6 +7,7 @@ from api_endpoints.twitter_api import fetch_twitter
 from sentiment_analysis.sentiment import analyze_sentiment
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from helper.citations import main
+from helper.recommendation_web_scraper import recommend
 
 app = Flask(__name__)
 CORS(app)
@@ -38,7 +39,8 @@ def process_query():
     # global extracted
     # extracted = extracted
 
-    return jsonify({"result": extracted.dict()})
+    # return jsonify({"result": extracted.dict()})
+    return jsonify({"result": "Query processed successfully."})
 
 @app.route('/query_concurrent', methods=['GET'])
 def process_query_concurrent():
@@ -90,9 +92,12 @@ def get_sentiment():
 
 @app.route('/validations', methods=['GET'])
 def get_validations():
-    global extracted
-    print(f"Stock name: {extracted.stock}")
-    citations = main(extracted.stock)
+    # global extracted
+    # print(f"Stock name: {extracted.stock}")
+    # citations = main(extracted.stock)
+    print("Stock name : ADANIPORTS")
+    citations = main("ADANIPORTS")
+    print(f"Citations: {citations}")
     return jsonify({"result": citations})
 
 @app.route('/graphs', methods=['GET'])
@@ -104,9 +109,19 @@ def get_graphs():
 
 @app.route('/recommendation', methods=['GET'])
 def get_recommendation():
-    global user_query
-    print(f"User query: {user_query}")
-    return jsonify({"result": "Recommendation will be displayed here."})
+    # global user_query
+    # print(f"User query: {user_query}")
+    stock_name = "ADANIPORTS"
+    result = recommend(stock_name)
+    return jsonify({"result": result})
+    # return jsonify({"result": "Recommendation will be displayed here."})
+
+@app.route('/output_text', methods=['GET'])
+def get_output_text():
+    # global extracted
+    # print(f"Extracted components: {extracted}")
+    text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+    return jsonify({"response": text})
 
 if __name__ == '__main__':
     app.run(debug=True)
