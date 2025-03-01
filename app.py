@@ -6,6 +6,7 @@ from api_endpoints.news_api import fetch_news
 from api_endpoints.twitter_api import fetch_twitter
 from sentiment_analysis.sentiment import analyze_sentiment
 from concurrent.futures import ThreadPoolExecutor, as_completed
+from helper.citations import main
 
 app = Flask(__name__)
 CORS(app)
@@ -85,6 +86,23 @@ def get_sentiment():
         print(f"Label: {item['label']} | Score: {item['score']:.4f}")
 
     return jsonify({"result": sentiment_result})
+
+
+@app.route('/validations', methods=['GET'])
+def get_validations():
+    global extracted
+    print(f"Stock name: {extracted.stock}")
+    citations = main(extracted.stock)
+    return jsonify({"result": citations})
+
+@app.route('/graphs', methods=['GET'])
+def get_graphs():
+    global extracted
+    print(f"Stock name: {extracted.stock}")
+    return jsonify({"result": "Graphs will be displayed here."})
+
+
+@app.route('/recommendation', methods=['GET'])
 
 
 if __name__ == '__main__':
