@@ -32,7 +32,7 @@ class QueryProcessor:
             "You are an assistant specialized in real-time sentiment analysis for smarter investment decisions. "
             "Extract the following components from the user's query:\n"
             "1. A query string to retrieve relevant news articles (for the news API).\n"
-            "2. A query string to retrieve stock data (for the stock API).\n"
+            "2. A query string to retrieve stock data (for the stock API).\n Ensure the stock names are returned as one among the following ticker options: ADANIPORTS, ASIANPAINT, AXISBANK, BAJAJ-AUTO, BAJAJFINSV, BAJFINANCE, BHARTIARTL, BPCL, BRITANNIA, CIPLA, COALINDIA, DRREDDY, EICHERMOT, GAIL, GRASIM, HCLTECH, HDFCBANK, HEROMOTOCO, HINDALCO, HINDUNILVR, ICICIBANK, INDUSINDBK, INFY, IOC, ITC, JSWSTEEL, KOTAKBANK, LT, MARUTI, NESTLEIND, NTPC, ONGC, POWERGRID, RELIANCE, SBIN, SHREECEM, SUNPHARMA, TATAMOTORS, TATASTEEL, TCS, TECHM, TITAN, ULTRACEMCO, UPL, VEDL, WIPRO, ZEEL. \n If some company is not explicitly mentioned, find it within these valid tickers. For example, if the user mentions 'Adani', you can map it to 'ADANIPORTS'.\n If the user mentions Tata, you can map it to 'TATAMOTORS' or 'TATASTEEL'.\n If the user mentions Bharat Petroleum Corporation Limited, you can map it to 'BPCL'.\n"
             "3. A query string to retrieve recent insights from Twitter (for the Twitter API).\n"
             "Return your response in JSON format with keys 'news', 'stock', and 'twitter'.\n"
             f"User Query: {user_query}"
