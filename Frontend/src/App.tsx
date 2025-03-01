@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Search, TrendingUp, TrendingDown, Minus, ChevronLeft, ChevronRight, ExternalLink } from 'lucide-react';
+import { TrendingUp } from 'lucide-react';
 import StockSearch from './components/StockSearch';
 import SentimentMeter from './components/SentimentMeter';
 import StockChart from './components/StockChart';
@@ -9,26 +9,74 @@ import ChatOutput from './components/ChatOutput';
 
 function App() {
   const [searchedCompany, setSearchedCompany] = useState('');
-  const [sentiment, setSentiment] = useState<'bullish' | 'bearish' | 'neutral'>('neutral');
+  const [sentimentLabel, setSentimentLabel] = useState<'bullish' | 'bearish' | 'neutral'>('neutral');
+  const [sentimentValue, setSentimentValue] = useState(0);
   const [showResults, setShowResults] = useState(false);
-  const [chatMessages, setChatMessages] = useState<Array<{text: string, type: 'system' | 'analysis'}>>([]);
+  const [chatMessages, setChatMessages] = useState<Array<{ text: string, type: 'system' }>>([]);
+  // Recommendation will now be an object with three keys from the backend.
+  const [recommendation, setRecommendation] = useState<{
+    "Financial Health": string;
+    "Market Sentiment": string;
+    "Recommendation": string;
+  } | null>(null);
 
-  const handleSearch = (company: string) => {
+  const handleSearch = async (company: string) => {
     setSearchedCompany(company);
-    // Simulate sentiment analysis result
-    const sentiments: Array<'bullish' | 'bearish' | 'neutral'> = ['bullish', 'bearish', 'neutral'];
-    const newSentiment = sentiments[Math.floor(Math.random() * sentiments.length)];
-    setSentiment(newSentiment);
     setShowResults(true);
+
+    // This endpoint must be called so that sentiment analysis can work (if applicable)
+    try {
+      await fetch("http://127.0.0.1:5000/query_concurrent");
+    } catch (error) {
+      console.error("Error calling query_concurrent:", error);
+    }
+
+    try {
+      // Fetch sentiment from backend
+      const sentimentRes = await fetch("http://127.0.0.1:5000/sentiment");
+      const sentimentData = await sentimentRes.json();
+      const sentimentResult = sentimentData.result[0];
+      if (sentimentResult) {
+        const label = sentimentResult.label.toLowerCase();
+        const score = sentimentResult.score;
+        if (label === "bullish") {
+          setSentimentLabel('bullish');
+          setSentimentValue(score);
+        } else if (label === "bearish") {
+          setSentimentLabel('bearish');
+          setSentimentValue(-score);
+        } else {
+          setSentimentLabel('neutral');
+          setSentimentValue(0);
+        }
+      }
+    } catch (error) {
+      console.error("Error fetching sentiment:", error);
+    }
+
+    try {
+      // Fetch chat output text from backend
+      const outputRes = await fetch("http://127.0.0.1:5000/output_text");
+      const outputData = await outputRes.json();
+      setChatMessages([{ text: outputData.insights, type: 'system' }]);
+    } catch (error) {
+      console.error("Error fetching output text:", error);
+    }
+
+    try {
+      // Fetch investment recommendation from backend
+      const recommendationRes = await fetch("http://127.0.0.1:5000/recommendation");
+      const recommendationData = await recommendationRes.json();
+      // Extract the nested result so the keys match what the component expects
+      setRecommendation(recommendationData.result);
+      // Update the sentiment label using the backend sentiment if needed
+      setSentimentLabel(
+        recommendationData.sentiment.toLowerCase() as 'bullish' | 'bearish' | 'neutral'
+      );
+    } catch (error) {
+      console.error("Error fetching recommendation:", error);
+    }
     
-    // Add chat messages
-    setChatMessages([
-      { text: `Analyzing ${company}...`, type: 'system' },
-      { text: `Found financial data for ${company}`, type: 'system' },
-      { text: `Market sentiment analysis: ${newSentiment.toUpperCase()}`, type: 'analysis' },
-      { text: `Processing historical stock data...`, type: 'system' },
-      { text: `Analysis complete. Recommendation generated.`, type: 'system' }
-    ]);
   };
 
   return (
@@ -41,13 +89,13 @@ function App() {
         </div>
       </header>
 
-      <main className="max-w-5xl mx-auto px-4 py-6 flex-grow">
-        {/* Search Section */}
+      <main className="max-w-5xl w-full mx-auto px-4 py-6 flex-grow">
+      {/* Search Section */}
         <section className="mb-6">
           <StockSearch onSearch={handleSearch} />
         </section>
 
-        {/* Validation Carousel - Now below search bar */}
+        {/* Validation Carousel */}
         <section className="mb-6">
           <h2 className="text-xl font-semibold mb-4">Validation Sources</h2>
           <ValidationCarousel />
@@ -58,21 +106,20 @@ function App() {
             {/* Chat Output and Sentiment Meter */}
             <section className="mb-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {/* Left Panel - Chat Output */}
+                {/* Chat Output */}
                 <div className="bg-white rounded-lg shadow-md p-6">
                   <h3 className="text-lg font-medium mb-4">Analysis Process</h3>
                   <ChatOutput messages={chatMessages} />
                 </div>
-
-                {/* Right Panel - Sentiment Meter */}
+                {/* Sentiment Meter */}
                 <div className="bg-white rounded-lg shadow-md p-6">
                   <h3 className="text-lg font-medium mb-4">Market Sentiment</h3>
-                  <SentimentMeter sentiment={sentiment} />
+                  <SentimentMeter value={sentimentValue} />
                 </div>
               </div>
             </section>
 
-            {/* Stock Chart - Full Width */}
+            {/* Stock Chart */}
             <section className="mb-6">
               <h2 className="text-xl font-semibold mb-4">Stock Performance for {searchedCompany}</h2>
               <div className="bg-white rounded-lg shadow-md p-6">
@@ -80,11 +127,17 @@ function App() {
               </div>
             </section>
 
-            {/* Investment Recommendation Summary */}
-            <section className="mb-6">
-              <h2 className="text-xl font-semibold mb-4">Investment Recommendation Summary</h2>
-              <InvestmentSummary company={searchedCompany} sentiment={sentiment} />
-            </section>
+            {/* Investment Recommendation */}
+            {recommendation && (
+              <section className="mb-6">
+                <h2 className="text-xl font-semibold mb-4">Investment Recommendation Summary</h2>
+                <InvestmentSummary 
+                  company={searchedCompany} 
+                  sentiment={sentimentLabel} 
+                  recommendation={recommendation} 
+                />
+              </section>
+            )}
           </>
         )}
       </main>

@@ -19,7 +19,7 @@ const SentimentMeter: React.FC<SentimentMeterProps> = ({ value = 0 }) => {
         value={value}
         // Softer pastel segments: light red for bearish and light green for bullish
         customSegmentStops={[-1, 0, 1]}
-        segmentColors={['#ffcdd2', '#c8e6c9']}
+        segmentColors={['#ff3232', '#66b266']}
         needleColor="gray"
         // Configure the arc to span from -90° to 90°
         startAngle={-90}

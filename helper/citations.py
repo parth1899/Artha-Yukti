@@ -21,7 +21,7 @@ def main(stock_name: str = None):
         stock_name = input("Enter the stock name (e.g., Asian Paints Ltd): ")
 
     # Initialize the FirecrawlApp with your API key
-    app = FirecrawlApp(api_key=Settings.FIRE_CRAWL_API_KEY)
+    app = FirecrawlApp(api_key='fc-7174987a5f824e74b688ce1392114077')
 
     # Build a search query string with factors needed for analysis
     search_query = f"{stock_name} stock analysis profit loss revenue news"
@@ -57,28 +57,29 @@ def main(stock_name: str = None):
     print(combined_text)
 
     # Build a prompt for Groq LLM that requests a detailed analysis and investment recommendation
-    prompt = f"""
-Based on the following search results regarding {stock_name}, which include financial indicators such as profit, loss, revenue, and current news context, provide a detailed analysis of the stock's current situation. Assess its financial health and market sentiment, then conclude with a clear recommendation on whether to invest in this stock or not, including your reasoning.
+#     prompt = f"""
+# Based on the following search results regarding {stock_name}, which include financial indicators such as profit, loss, revenue, and current news context, provide a detailed analysis of the stock's current situation. Assess its financial health and market sentiment, then conclude with a clear recommendation on whether to invest in this stock or not, including your reasoning.
 
-Search Results:
-{combined_text}
-"""
+# Search Results:
+# {combined_text}
+# """
 
-    # Initialize the Groq client with your Groq API key
-    client = Groq(api_key="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")
+#     # Initialize the Groq client with your Groq API key
+#     client = Groq(api_key="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")
 
-    # Generate the summary/recommendation using Groq LLM
-    chat_completion = client.chat.completions.create(
-        messages=[
-            {"role": "user", "content": prompt}
-        ],
-        model="llama-3.3-70b-versatile",
-        stream=False,
-    )
+#     # Generate the summary/recommendation using Groq LLM
+#     chat_completion = client.chat.completions.create(
+#         messages=[
+#             {"role": "user", "content": prompt}
+#         ],
+#         model="llama-3.3-70b-versatile",
+#         stream=False,
+#     )
 
     # Print the summary recommendation
-    print("\nInvestment Recommendation Summary:")
-    print(chat_completion.choices[0].message.content)
+    # print("\nInvestment Recommendation Summary:")
+    # print(chat_completion.choices[0].message.content)
+    return results
 
 # if __name__ == "__main__":
 #     # If a stock name is passed as a command-line argument, use it; otherwise, it will be prompted.
