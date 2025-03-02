@@ -99,7 +99,7 @@ function App() {
 
         {/* Validation Carousel */}
         <section className="mb-6">
-          <h2 className="text-xl font-semibold mb-4">Validation Sources</h2>
+          <h2 className="text-xl font-semibold mb-4">Sources from the Web 🔎</h2>
           <ValidationCarousel sessionId={sessionId} />
         </section>
 
@@ -123,7 +123,7 @@ function App() {
 
             {/* Stock Chart */}
             <section className="mb-6">
-              <h2 className="text-xl font-semibold mb-4">Predicted Stock Performance</h2>
+              <h2 className="text-xl font-semibold mb-4">Predicted Stock Performance 📈</h2>
               <div className="bg-white rounded-lg shadow-md p-6">
                 <StockChart company={searchedCompany} sessionId={sessionId} />
               </div>

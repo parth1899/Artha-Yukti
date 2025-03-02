@@ -45,6 +45,7 @@ Guidelines:
 - When sentiment is bullish but LSTM predictions are flat or declining (or vice versa), explain the discrepancy.
 - Provide actionable, unbiased insights based on these indicators.
 - Keep the output concise and insightful.
+- Ensure that you highlight the varibles adjusted price, {weight_distribution} in your insights.
 """
 
     # Prepare the payload for Groq's API call

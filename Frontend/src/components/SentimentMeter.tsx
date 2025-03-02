@@ -8,7 +8,7 @@ interface SentimentMeterProps {
 }
 
 const SentimentMeter: React.FC<SentimentMeterProps> = ({ value = 0 }) => {
-  const sentimentLabel = value > 0 ? "Bullish" : value < 0 ? "Bearish" : "Neutral";
+  const sentimentLabel = value > 0 ? "🐂 Bullish" : value < 0 ? "🐻 Bearish" : "😐 Neutral";
   const sentimentColor = value > 0 ? 'text-green-500' : value < 0 ? 'text-red-500' : 'text-yellow-500';
 
   return (
