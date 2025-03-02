@@ -9,7 +9,7 @@ import tensorflow as tf
 
 def predict_main(stock_symbol, target_date_str):
     # ---- Step 1: Load the Cleaned Dataset ----
-    print("HI")
+    # print("HI")
     file_path = "lstm_models/NIFTY50_cleaned.csv"  # Ensure this file exists
     df = pd.read_csv(file_path, parse_dates=['Date'])
     

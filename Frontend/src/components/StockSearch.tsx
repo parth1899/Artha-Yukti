@@ -7,7 +7,7 @@ const SAMPLE_QUERIES = [
 ];
 
 interface StockSearchProps {
-  onSearch: (query: string) => void;
+  onSearch: (query: string, sessionId: string) => void;
 }
 
 const StockSearch: React.FC<StockSearchProps> = ({ onSearch }) => {
@@ -18,8 +18,6 @@ const StockSearch: React.FC<StockSearchProps> = ({ onSearch }) => {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setSearchTerm(value);
-
-    // Filter sample queries based on input value
     const filtered = SAMPLE_QUERIES.filter(query =>
       query.toLowerCase().includes(value.toLowerCase())
     );
@@ -35,17 +33,20 @@ const StockSearch: React.FC<StockSearchProps> = ({ onSearch }) => {
   const handleSearch = async () => {
     if (searchTerm.trim()) {
       try {
-        await fetch("http://127.0.0.1:5000/query", {
+        // Pass an empty session_id initially.
+        const res = await fetch("http://127.0.0.1:5000/query", {
           method: "POST",
           headers: {
             "Content-Type": "application/json"
           },
-          body: JSON.stringify({ query: searchTerm })
+          body: JSON.stringify({ query: searchTerm, session_id: "" })
         });
+        const data = await res.json();
+        // Pass both the query and the returned session_id back to App.
+        onSearch(searchTerm, data.session_id);
       } catch (error) {
         console.error("Error sending query:", error);
       }
-      onSearch(searchTerm);
     }
   };
 

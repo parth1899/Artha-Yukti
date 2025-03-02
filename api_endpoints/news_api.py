@@ -12,7 +12,7 @@ def fetch_news(query: str) -> dict:
         dict: The JSON response from the news API or an error message.
     """
     url = "https://newsapi.org/v2/everything"
-    print(Settings.NEWS_API_KEY)
+    # print(Settings.NEWS_API_KEY)
     params = {
         "q": query,
         "apiKey": Settings.NEWS_API_KEY,  # Your NewsAPI key from the config

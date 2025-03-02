@@ -7,7 +7,11 @@ interface ValidationSource {
   url: string;
 }
 
-const ValidationCarousel: React.FC = () => {
+interface ValidationCarouselProps {
+  sessionId: string;
+}
+
+const ValidationCarousel: React.FC<ValidationCarouselProps> = ({ sessionId }) => {
   const [scrollPosition, setScrollPosition] = useState(0);
   const [validationSources, setValidationSources] = useState<ValidationSource[]>([]);
   const carouselRef = useRef<HTMLDivElement>(null);
@@ -15,33 +19,33 @@ const ValidationCarousel: React.FC = () => {
   useEffect(() => {
     const fetchValidations = async () => {
       try {
-        const res = await fetch("http://127.0.0.1:5000/validations");
-        const data = await res.json();
-        setValidationSources(data.result);
+        // Only fetch if sessionId is available.
+        if (sessionId) {
+          const res = await fetch(`http://127.0.0.1:5000/validations?session_id=${sessionId}`);
+          const data = await res.json();
+          setValidationSources(data.result);
+        }
       } catch (error) {
         console.error("Error fetching validations:", error);
       }
     };
     fetchValidations();
-  }, []);
+  }, [sessionId]);
 
   const scroll = (direction: 'left' | 'right') => {
     if (carouselRef.current) {
       const { scrollWidth, clientWidth } = carouselRef.current;
       const scrollAmount = clientWidth / 2;
-      
       let newPosition;
       if (direction === 'left') {
         newPosition = Math.max(0, scrollPosition - scrollAmount);
       } else {
         newPosition = Math.min(scrollWidth - clientWidth, scrollPosition + scrollAmount);
       }
-      
       carouselRef.current.scrollTo({
         left: newPosition,
         behavior: 'smooth'
       });
-      
       setScrollPosition(newPosition);
     }
   };

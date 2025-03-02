@@ -13,27 +13,32 @@ function App() {
   const [sentimentValue, setSentimentValue] = useState(0);
   const [showResults, setShowResults] = useState(false);
   const [chatMessages, setChatMessages] = useState<Array<{ text: string, type: 'system' }>>([]);
-  // Recommendation will now be an object with three keys from the backend.
   const [recommendation, setRecommendation] = useState<{
     "Financial Health": string;
     "Market Sentiment": string;
     "Recommendation": string;
   } | null>(null);
+  const [sessionId, setSessionId] = useState("");
 
-  const handleSearch = async (company: string) => {
-    setSearchedCompany(company);
+  // This callback is triggered by StockSearch. It sends the initial query (with an empty session id)
+  // and then saves the session id returned by the backend.
+  const handleSearch = async (query: string, newSessionId: string) => {
+    // Save the session id from the /query response.
+    setSessionId(newSessionId);
+    setSearchedCompany(query);
     setShowResults(true);
 
-    // This endpoint must be called so that sentiment analysis can work (if applicable)
+    // Use the session id for all subsequent calls.
     try {
-      await fetch("http://127.0.0.1:5000/query_concurrent");
+      // Call query_concurrent with sessionId.
+      await fetch(`http://127.0.0.1:5000/query_concurrent?session_id=${newSessionId}`);
     } catch (error) {
       console.error("Error calling query_concurrent:", error);
     }
 
     try {
-      // Fetch sentiment from backend
-      const sentimentRes = await fetch("http://127.0.0.1:5000/sentiment");
+      // Fetch sentiment from backend.
+      const sentimentRes = await fetch(`http://127.0.0.1:5000/sentiment?session_id=${newSessionId}`);
       const sentimentData = await sentimentRes.json();
       const sentimentResult = sentimentData.result[0];
       if (sentimentResult) {
@@ -55,8 +60,8 @@ function App() {
     }
 
     try {
-      // Fetch chat output text from backend
-      const outputRes = await fetch("http://127.0.0.1:5000/output_text");
+      // Fetch chat output text from backend.
+      const outputRes = await fetch(`http://127.0.0.1:5000/output_text?session_id=${newSessionId}`);
       const outputData = await outputRes.json();
       setChatMessages([{ text: outputData.insights, type: 'system' }]);
     } catch (error) {
@@ -64,19 +69,16 @@ function App() {
     }
 
     try {
-      // Fetch investment recommendation from backend
-      const recommendationRes = await fetch("http://127.0.0.1:5000/recommendation");
+      // Fetch investment recommendation from backend.
+      const recommendationRes = await fetch(`http://127.0.0.1:5000/recommendation?session_id=${newSessionId}`);
       const recommendationData = await recommendationRes.json();
-      // Extract the nested result so the keys match what the component expects
       setRecommendation(recommendationData.result);
-      // Update the sentiment label using the backend sentiment if needed
       setSentimentLabel(
         recommendationData.sentiment.toLowerCase() as 'bullish' | 'bearish' | 'neutral'
       );
     } catch (error) {
       console.error("Error fetching recommendation:", error);
     }
-    
   };
 
   return (
@@ -90,7 +92,7 @@ function App() {
       </header>
 
       <main className="max-w-5xl w-full mx-auto px-4 py-6 flex-grow">
-      {/* Search Section */}
+        {/* Search Section */}
         <section className="mb-6">
           <StockSearch onSearch={handleSearch} />
         </section>
@@ -98,7 +100,7 @@ function App() {
         {/* Validation Carousel */}
         <section className="mb-6">
           <h2 className="text-xl font-semibold mb-4">Validation Sources</h2>
-          <ValidationCarousel />
+          <ValidationCarousel sessionId={sessionId} />
         </section>
 
         {showResults && (
@@ -123,7 +125,7 @@ function App() {
             <section className="mb-6">
               <h2 className="text-xl font-semibold mb-4">Stock Performance for {searchedCompany}</h2>
               <div className="bg-white rounded-lg shadow-md p-6">
-                <StockChart company={searchedCompany} />
+                <StockChart company={searchedCompany} sessionId={sessionId} />
               </div>
             </section>
 

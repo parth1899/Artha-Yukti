@@ -48,6 +48,8 @@ def recommend(stock_name: str):
         results = data.get("json", {}).get("results", [])
         if not results:
             raise ValueError("No results found in the Firecrawl response.")
+        
+        temp_results = data["json"]["results"]
 
         # Combine the top 5 search results into a single text block for context
         combined_text = ""
@@ -59,8 +61,8 @@ def recommend(stock_name: str):
                 f"URL: {result.get('url', 'N/A')}\n\n"
             )
 
-        print("Combined Search Results:")
-        print(combined_text)
+        # print("Combined Search Results:")
+        # print(combined_text)
 
         # Build a prompt for Groq LLM that requests a structured investment recommendation
         prompt = f"""
@@ -88,8 +90,8 @@ Search Results:
 
         # Extract the response content
         response_content = response.choices[0].message.content
-        print("Raw Groq Response:")
-        print(response_content)
+        # print("Raw Groq Response:")
+        # print(response_content)
 
         # Use regex to extract a JSON object from the response
         json_match = re.search(r'\{.*\}', response_content, re.DOTALL)
@@ -105,17 +107,17 @@ Search Results:
 
         print("\nStructured Investment Recommendation:")
         print(json.dumps(extraction.model_dump(), indent=4))
-        return extraction
+        return [temp_results, extraction]
 
     except Exception as e:
         print(f"Error during recommendation: {e}")
         # Return a default extraction response in case of errors
         default_extraction = ExtractionResponse.model_validate({
-            "Financial Health": "",
-            "Market Sentiment": "",
+            "Financial Health": f"Error: {str(e)}",
+            "Market Sentiment": f"Error: {str(e)}",
             "Recommendation": f"Error: {str(e)}"
         })
-        return default_extraction
+        return [None, default_extraction]
 
 # if _name_ == "_main_":
 #     # Example usage of the recommend function.

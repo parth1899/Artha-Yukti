@@ -18,7 +18,8 @@ class ExtractSchema(BaseModel):
 def main(stock_name: str = None):
     # If stock_name is not provided, prompt the user for input
     if not stock_name:
-        stock_name = input("Enter the stock name (e.g., Asian Paints Ltd): ")
+        # stock_name = input("Enter the stock name (e.g., Asian Paints Ltd): ")
+        return Exception("Stock name not provided.")
 
     # Initialize the FirecrawlApp with your API key
     app = FirecrawlApp(api_key='fc-7174987a5f824e74b688ce1392114077')
@@ -53,8 +54,8 @@ def main(stock_name: str = None):
             f"URL: {result['url']}\n\n"
         )
 
-    print("Combined Search Results:")
-    print(combined_text)
+    # print("Combined Search Results:")
+    # print(combined_text)
 
     # Build a prompt for Groq LLM that requests a detailed analysis and investment recommendation
 #     prompt = f"""
