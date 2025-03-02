@@ -87,7 +87,7 @@ function App() {
       <header className="bg-white shadow-sm py-4">
         <div className="max-w-5xl mx-auto px-4 flex items-center">
           <TrendingUp className="h-6 w-6 text-indigo-600 mr-2" />
-          <h1 className="text-xl font-semibold text-indigo-600">indoVate Real Time Stock Analysis</h1>
+          <h1 className="text-xl font-semibold text-indigo-600">ArthaYukti</h1>
         </div>
       </header>
 
@@ -110,7 +110,7 @@ function App() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* Chat Output */}
                 <div className="bg-white rounded-lg shadow-md p-6">
-                  <h3 className="text-lg font-medium mb-4">Analysis Process</h3>
+                  <h3 className="text-lg font-medium mb-4">Prediction-based Insights</h3>
                   <ChatOutput messages={chatMessages} />
                 </div>
                 {/* Sentiment Meter */}
@@ -123,7 +123,7 @@ function App() {
 
             {/* Stock Chart */}
             <section className="mb-6">
-              <h2 className="text-xl font-semibold mb-4">Stock Performance for {searchedCompany}</h2>
+              <h2 className="text-xl font-semibold mb-4">Predicted Stock Performance</h2>
               <div className="bg-white rounded-lg shadow-md p-6">
                 <StockChart company={searchedCompany} sessionId={sessionId} />
               </div>
@@ -146,7 +146,7 @@ function App() {
 
       <footer className="bg-white shadow-inner py-4 mt-auto">
         <div className="max-w-5xl mx-auto px-4 text-center text-sm text-gray-500">
-          © 2025 indoVate Real Time Stock Analysis. All data is for informational purposes only.
+          © 2025 ArthaYukti- Real Time Stock Analysis. All data is for informational purposes only.
         </div>
       </footer>
     </div>
