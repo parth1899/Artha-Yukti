@@ -1,4 +1,4 @@
-# 📈 Financial Sentiment & Stock Prediction Model  
+# 📈 ArthaYukti- A Deep Learning-Driven Financial Sentiment Analysis & Stock Forecasting Platform
 
 This project integrates **FinBERT-based sentiment analysis** with an **LSTM-based stock price prediction model** to provide a **comprehensive market analysis**. It dynamically assigns weightage to sentiment and price forecasts to improve investment decision-making.
 
@@ -67,12 +67,37 @@ https://github.com/user-attachments/assets/4c9511a8-e48e-4f45-85fd-0fcb628f0f8a
 
 ---
 
-## ⚙️ Installation  
+Here's an improved **Installation** section with clearer steps, better organization, and additional setup details for smooth execution:  
 
+---
+
+## ⚙️ Installation & Setup  
+
+### 1️⃣ Clone the Repository  
 ```bash
-# Clone the repository
-git clone https://github.com/your-username/financial-sentiment-stock-prediction.git
-cd financial-sentiment-stock-prediction
+git clone https://github.com/parth1899/IndovateAI.git
+cd IndovateAI
+```
+
+### 2️⃣ Backend Setup  
+```bash
+cd Backend
+
+# Create and activate a virtual environment (Recommended)
+python -m venv venv
+source venv/bin/activate  # On Windows, use: venv\Scripts\activate
+
+# Install required dependencies
+pip install -r requirements.txt
+```
+
+### 3️⃣ Frontend Setup  
+```bash
+cd ../Frontend
 
 # Install dependencies
-pip install -r requirements.txt
+npm install
+
+# Start the development server
+npm run dev
+```
