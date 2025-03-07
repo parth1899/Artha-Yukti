@@ -22,9 +22,7 @@ This project integrates **FinBERT-based sentiment analysis** with an **LSTM-base
 
 ## 🏗️ System Architecture  
 
----![architecture](https://github.com/user-attachments/assets/2823d90f-25d0-42c4-9978-02f039406e53)
-
-
+![architecture](https://github.com/user-attachments/assets/bca71941-0f8e-47dd-8680-df9d8223de0a)
 
 
 1️⃣ **Data Acquisition & Reliability**  
@@ -53,7 +51,7 @@ This project integrates **FinBERT-based sentiment analysis** with an **LSTM-base
 
 ## 🎥 Demo  
 
-🔗 *Click the image to watch the demo video!*  
+https://github.com/user-attachments/assets/4c9511a8-e48e-4f45-85fd-0fcb628f0f8a
 
 ---
 
