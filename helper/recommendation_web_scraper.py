@@ -6,7 +6,7 @@ from typing import List
 from pydantic import BaseModel, Field
 from firecrawl import FirecrawlApp
 from groq import Groq
-# from config import Settings
+from config import Settings
 
 # Define extraction schemas for search results
 class SearchResult(BaseModel):
@@ -26,7 +26,7 @@ class ExtractionResponse(BaseModel):
 def recommend(stock_name: str):
     try:
         # Initialize the FirecrawlApp with your API key
-        fc_app = FirecrawlApp(api_key='fc-7174987a5f824e74b688ce1392114077')
+        fc_app = FirecrawlApp(api_key=Settings.FIRE_CRAWL_API_KEY)
 
         # Build a search query string with factors needed for analysis
         search_query = f"{stock_name} stock analysis profit loss revenue news"

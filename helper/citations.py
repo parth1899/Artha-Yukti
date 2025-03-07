@@ -22,7 +22,8 @@ def main(stock_name: str = None):
         return Exception("Stock name not provided.")
 
     # Initialize the FirecrawlApp with your API key
-    app = FirecrawlApp(api_key='fc-7174987a5f824e74b688ce1392114077')
+    print("the api key is: ", Settings.FIRE_CRAWL_API_KEY)
+    app = FirecrawlApp(api_key=Settings.FIRE_CRAWL_API_KEY)
 
     # Build a search query string with factors needed for analysis
     search_query = f"{stock_name} stock analysis profit loss revenue news"
