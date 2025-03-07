@@ -1,1 +1,0 @@
-# NIFTY_forecasting
