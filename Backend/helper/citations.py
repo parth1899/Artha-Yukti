@@ -55,32 +55,7 @@ def main(stock_name: str = None):
             f"URL: {result['url']}\n\n"
         )
 
-    # print("Combined Search Results:")
-    # print(combined_text)
-
-    # Build a prompt for Groq LLM that requests a detailed analysis and investment recommendation
-#     prompt = f"""
-# Based on the following search results regarding {stock_name}, which include financial indicators such as profit, loss, revenue, and current news context, provide a detailed analysis of the stock's current situation. Assess its financial health and market sentiment, then conclude with a clear recommendation on whether to invest in this stock or not, including your reasoning.
-
-# Search Results:
-# {combined_text}
-# """
-
-#     # Initialize the Groq client with your Groq API key
-#     client = Groq(api_key="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")
-
-#     # Generate the summary/recommendation using Groq LLM
-#     chat_completion = client.chat.completions.create(
-#         messages=[
-#             {"role": "user", "content": prompt}
-#         ],
-#         model="llama-3.3-70b-versatile",
-#         stream=False,
-#     )
-
-    # Print the summary recommendation
-    # print("\nInvestment Recommendation Summary:")
-    # print(chat_completion.choices[0].message.content)
+    
     return results
 
 # if __name__ == "__main__":
