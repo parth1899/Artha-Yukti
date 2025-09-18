@@ -1,4 +1,4 @@
-# 📈 ArthaYukti – A Deep Learning-Driven Financial Sentiment Analysis & Stock Forecasting Platform
+# Deep Learning-Driven Financial Sentiment Analysis & Stock Forecasting Platform
 Built for INDOvateAI Sprint 2025 | Secured Second Prize 🏆
 
 This project integrates FinBERT-based sentiment analysis with an LSTM-based stock price prediction model to provide a comprehensive market analysis. It dynamically assigns weightage to sentiment and price forecasts to improve investment decision-making.
@@ -7,17 +7,23 @@ This project integrates FinBERT-based sentiment analysis with an LSTM-based stoc
 
 ## 🚨 Problem Statement  
 
-📉 **Investors face an overwhelming volume of real-time data, leading to delayed decisions and missed opportunities.**  
-❌ **Extracting accurate sentiment from unstructured sources is complex and error-prone, posing high-stakes risks.**  
+- **Investors face an overwhelming volume of real-time data, leading to delayed decisions and missed opportunities.**  
+- **Extracting accurate sentiment from unstructured sources is complex and error-prone, posing high-stakes risks.**  
 
 ---
 
 ## 🛠️ Solution Approach  
 
-✅ **Custom Nifty50 database (2014–2025, 129,377 rows)** → Cleaned & preprocessed for time-series forecasting.  
-✅ **FinBERT-based Sentiment Extraction** → Trained on **1.4M financial headlines** to extract **bullish, bearish, or neutral** sentiment.  
-✅ **LSTM-based Time-Series Prediction** → Forecasts stock price trends based on historical market data.  
-✅ **User-Friendly Dashboard** → Displays **prediction charts, source citations, analytics, and investment recommendations**.  
+- **Custom Nifty50 database (2014–2025, 129,377 rows)** → Cleaned & preprocessed for time-series forecasting.  
+- **FinBERT-based Sentiment Extraction** → Trained on **1.4M financial headlines** to extract **bullish, bearish, or neutral** sentiment.  
+- **LSTM-based Time-Series Prediction** → Forecasts stock price trends based on historical market data.  
+- **User-Friendly Dashboard** → Displays **prediction charts, source citations, analytics, and investment recommendations**.  
+
+---
+
+## 🎥 Demo  
+
+https://github.com/user-attachments/assets/4c9511a8-e48e-4f45-85fd-0fcb628f0f8a
 
 ---
 
@@ -47,12 +53,6 @@ This project integrates FinBERT-based sentiment analysis with an LSTM-based stoc
 5️⃣ **Visualization & User Empowerment**  
    - Multiple interactive **graph view options**.  
    - **Source verification** for user confidence & validation.  
-
----
-
-## 🎥 Demo  
-
-https://github.com/user-attachments/assets/4c9511a8-e48e-4f45-85fd-0fcb628f0f8a
 
 ---
 
